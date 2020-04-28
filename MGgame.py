@@ -59,9 +59,9 @@ while (needle.x, needle.y) == (0, 0) or \
 	ether.random_pos()
 	tube.random_pos()
 
-print((needle.x, needle.y))
-print((ether.x, ether.y))
-print((tube.x, tube.y))
+# print((needle.x, needle.y))
+# print((ether.x, ether.y))
+# print((tube.x, tube.y))
 
 window.blit(needle.survival, (needle.x, needle.y))
 window.blit(ether.survival, (ether.x, ether.y))
@@ -121,4 +121,8 @@ while continue_main:
 
 	# Window's game closes when MacGyver meets the watchman
 	if level.structure[mg.case_y][mg.case_x] == 'a':
-			continue_main = 0
+		if count_survival == 4:
+			print("Congratulations, you win! MacGyver sedated the watchman and escaped ")
+		else:
+			print("Sorry, you loose... and nothing good happened to MacGyver.")
+		continue_main = 0

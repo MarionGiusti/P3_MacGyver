@@ -158,7 +158,7 @@ class Tool:
 		# For each tool generated:
 		# - Give a random number, between 0 and the number of case floor-1
 		hasard_case = randrange(self.level.count_floor)
-		print(self.level.count_floor, hasard_case)
+		# print(self.level.count_floor, hasard_case)
 
 		# Search and give the real position in the labyrinthe structure of 
 		# the given random case floor.
