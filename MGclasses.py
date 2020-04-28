@@ -151,11 +151,11 @@ class Tool:
 
 	def random_pos(self):
 		""" Method to assign a random position for each tool: 
-		- Careful, only on the floor case and not wall case
+		- Careful, only on the floor cases and not on the wall cases
 		- Must add in main file, a condition to avoid that 
-		the tools postion are on start and arrival case """
+		the tools postion are on start and arrival cases """
 
-		# For each tool generate:
+		# For each tool generated:
 		# - Give a random number, between 0 and the number of case floor-1
 		hasard_case = randrange(self.level.count_floor)
 		print(self.level.count_floor, hasard_case)

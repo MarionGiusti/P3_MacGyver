@@ -67,17 +67,19 @@ window.blit(needle.survival, (needle.x, needle.y))
 window.blit(ether.survival, (ether.x, ether.y))
 window.blit(tube.survival, (tube.x, tube.y))
 
-# Rafraichissement
+# Refreshing
 pygame.display.flip()
 
 # MAIN LOOP
 continue_main = 1
 pygame.key.set_repeat(400,30)
 
+count_survival = 0
+
 while continue_main:
 
 	for event in pygame.event.get():
-		# If the user want to quit: escape button or close window icon
+		# If the user wants to quit: escape button or close window icon
 		# variable continue_main = 0
 		if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
 			continue_main = 0
@@ -92,12 +94,31 @@ while continue_main:
 					mg.move('up')
 				elif event.key == K_DOWN:
 					mg.move('down')	
+
+	# If the character MacGyver moves on the same case than a tool:
+	# - The tool position changes to be on the arrival case
+	# - Variable count_survival to count the number of items collected
+	if (mg.x, mg.y) == (needle.x, needle.y):
+		(needle.x, needle.y) = ((len(level.structure)-1) * sprite_size, (len(level.structure)-1) * sprite_size)
+		count_survival += 1
+	elif (mg.x, mg.y) == (ether.x, ether.y):
+		(ether.x, ether.y) = ((len(level.structure)-1) * sprite_size, (len(level.structure)-1) * sprite_size)
+		count_survival += 1
+	elif (mg.x, mg.y) == (tube.x, tube.y):
+		(tube.x, tube.y) = ((len(level.structure)-1) * sprite_size, (len(level.structure)-1) * sprite_size)
+		count_survival += 1
 	
 	level.display_level(window)
 	window.blit(mg.face, (mg.x, mg.y)) 
-	window.blit(watchman.face, (watchman.x, watchman.y)) 
 	window.blit(needle.survival, (needle.x, needle.y))
 	window.blit(ether.survival, (ether.x, ether.y))
 	window.blit(tube.survival, (tube.x, tube.y))
+	# Blit the watchman after the survival tools to cover them
+	# when their position changed to be on arrival case
+	window.blit(watchman.face, (watchman.x, watchman.y)) 
 
 	pygame.display.flip()
+
+	# Window's game closes when MacGyver meets the watchman
+	if level.structure[mg.case_y][mg.case_x] == 'a':
+			continue_main = 0
