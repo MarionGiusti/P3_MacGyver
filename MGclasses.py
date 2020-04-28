@@ -8,6 +8,7 @@ from random import randrange
 
 from MGconstants import *
 
+
 class Level:
 	""" Class to create a level """
 
@@ -81,18 +82,66 @@ class Level:
 
 class Person:
 	""" Class to create a character """
-	def __init__(self, face, niveau):
+
+	def __init__(self, face, level):
+		""" Initialisation """
+
 		# Sprite of the character
 		self.face =pygame.image.load(face)
 		# Position of the character, case and pixel
 		self.case_x = 0
 		self.case_y = 0
-		self.pix_x = 0
-		self.pix_y = 0
+		self.x = 0
+		self.y = 0
 		# Level of the labyrinthe
-		self.level = niveau
+		self.level = level
 
 
+class Tool:
+	""" Class to create the survival items """
+
+	def __init__(self, survival, level):
+		""" Initialisation """
+
+		# Sprite of the survival tool
+		self.survival = pygame.image.load(survival)
+		# Position of the tool, case and pixel
+		self.case_x = 0
+		self.case_y = 0
+		self.x = 0
+		self.y = 0
+		# Level of the labyrinthe
+		self.level = level
+
+
+	def random_pos(self):
+		""" Method to assign a random position for each tool: 
+		- Careful, only on the floor case and not wall case
+		- Must add in main file, a condition to avoid that 
+		the tools postion are on start and arrival case """
+
+		# For each tool generate:
+		# - Give a random number, between 0 and the number of case floor-1
+		hasard_case = randrange(self.level.count_floor)
+		print(self.level.count_floor, hasard_case)
+
+		# Search and give the real position in the labyrinthe structure of 
+		# the given random case floor.
+		num_line = 0
+		count = 0
+		for line in self.level.structure:
+			num_case = 0
+			for sprite in line:
+				x = num_case * sprite_size
+				y = num_line * sprite_size
+
+				if sprite == '0':
+					if count == hasard_case:
+						self.x = x
+						self.y = y
+					count += 1
+				num_case += 1
+			num_line += 1
 
 
 

@@ -36,10 +36,36 @@ level.display_level(window)
 # Creation of MacGyver
 mg = Person(image_perso, level)
 watchman = Person(image_arrival, level)
+(watchman.x, watchman.y) = ((nbr_sprite_side - 1) * sprite_size, (nbr_sprite_side - 1) * sprite_size)
 
-(watchman.pix_x, watchman.pix_y) = ((nbr_sprite_side - 1) * sprite_size, (nbr_sprite_side - 1) * sprite_size)
+# Creation of the survival items
+ether = Tool(image_ether, level)
+needle = Tool(image_needle, level)
+tube = Tool(image_tube, level)
 
+# Condition to avoid the survival items to be localised on
+# start and arrival case
+while (needle.x, needle.y) == (0, 0) or \
+	(needle.x, needle.y) == ((nbr_sprite_side - 1) * sprite_size, (nbr_sprite_side - 1) * sprite_size) or \
+	(ether.x, ether.y) == (0, 0) or \
+	(ether.x, ether.y) == ((nbr_sprite_side - 1) * sprite_size, (nbr_sprite_side - 1) * sprite_size) or \
+	(tube.x,tube.y) == (0, 0) or \
+	(tube.x, tube.y) == ((nbr_sprite_side - 1) * sprite_size, (nbr_sprite_side - 1) * sprite_size) or \
+	(needle.x, needle.y) == (ether.x, ether.y) or \
+	(needle.x, needle.y) == (tube.x, tube.y) or \
+	(ether.x, ether.y) == (tube.x, tube.y):
 
+	needle.random_pos()
+	ether.random_pos()
+	tube.random_pos()
+
+print((needle.x, needle.y))
+print((ether.x, ether.y))
+print((tube.x, tube.y))
+
+window.blit(needle.survival, (needle.x, needle.y))
+window.blit(ether.survival, (ether.x, ether.y))
+window.blit(tube.survival, (tube.x, tube.y))
 
 # Rafraichissement
 pygame.display.flip()
@@ -59,7 +85,10 @@ while continue_main:
 
 	
 	level.display_level(window)
-	window.blit(mg.face, (mg.pix_x, mg.pix_y)) 
-	window.blit(watchman.face, (watchman.pix_x, watchman.pix_y)) 
+	window.blit(mg.face, (mg.x, mg.y)) 
+	window.blit(watchman.face, (watchman.x, watchman.y)) 
+	window.blit(needle.survival, (needle.x, needle.y))
+	window.blit(ether.survival, (ether.x, ether.y))
+	window.blit(tube.survival, (tube.x, tube.y))
 
 	pygame.display.flip()
