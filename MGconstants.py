@@ -25,6 +25,9 @@ image_ether = "images/ether.png"
 image_needle = "images/needle.png"
 image_tube = "images/tube.png"
 
+# Two possible images for the end of the game
+image_win = "images/win.png"
+image_loose = "images/loose.png"
 
 
 

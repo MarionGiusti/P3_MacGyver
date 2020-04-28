@@ -77,52 +77,83 @@ pygame.key.set_repeat(400,30)
 count_survival = 0
 
 while continue_main:
+	continue_game = 1
+	continue_over = 1
 
-	for event in pygame.event.get():
-		# If the user wants to quit: escape button or close window icon
-		# variable continue_main = 0
-		if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-			continue_main = 0
+	while continue_game:
+		pygame.time.Clock().tick(30)
 
-		elif event.type == KEYDOWN:
-				# Move MacGyver with the arrow keys
-				if event.key == K_RIGHT:
-					mg.move('right')
-				elif event.key == K_LEFT:
-					mg.move('left')
-				elif event.key == K_UP:
-					mg.move('up')
-				elif event.key == K_DOWN:
-					mg.move('down')	
+		for event in pygame.event.get():
+			# If the user wants to quit: escape button or close window icon
+			# variable continue_main = 0
+			if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+				continue_main = 0
+				continue_game = 0
+				continue_over = 0
 
-	# If the character MacGyver moves on the same case than a tool:
-	# - The tool position changes to be on the arrival case
-	# - Variable count_survival to count the number of items collected
-	if (mg.x, mg.y) == (needle.x, needle.y):
-		(needle.x, needle.y) = ((len(level.structure)-1) * sprite_size, (len(level.structure)-1) * sprite_size)
-		count_survival += 1
-	elif (mg.x, mg.y) == (ether.x, ether.y):
-		(ether.x, ether.y) = ((len(level.structure)-1) * sprite_size, (len(level.structure)-1) * sprite_size)
-		count_survival += 1
-	elif (mg.x, mg.y) == (tube.x, tube.y):
-		(tube.x, tube.y) = ((len(level.structure)-1) * sprite_size, (len(level.structure)-1) * sprite_size)
-		count_survival += 1
-	
-	level.display_level(window)
-	window.blit(mg.face, (mg.x, mg.y)) 
-	window.blit(needle.survival, (needle.x, needle.y))
-	window.blit(ether.survival, (ether.x, ether.y))
-	window.blit(tube.survival, (tube.x, tube.y))
-	# Blit the watchman after the survival tools to cover them
-	# when their position changed to be on arrival case
-	window.blit(watchman.face, (watchman.x, watchman.y)) 
+			elif event.type == KEYDOWN:
+					# Move MacGyver with the arrow keys
+					if event.key == K_RIGHT:
+						mg.move('right')
+					elif event.key == K_LEFT:
+						mg.move('left')
+					elif event.key == K_UP:
+						mg.move('up')
+					elif event.key == K_DOWN:
+						mg.move('down')	
 
-	pygame.display.flip()
+		# If the character MacGyver moves on the same case than a tool:
+		# - The tool position changes to be on the arrival case
+		# - Variable count_survival to count the number of items collected
+		if (mg.x, mg.y) == (needle.x, needle.y):
+			(needle.x, needle.y) = ((len(level.structure)-1) * sprite_size, (len(level.structure)-1) * sprite_size)
+			count_survival += 1
+		elif (mg.x, mg.y) == (ether.x, ether.y):
+			(ether.x, ether.y) = ((len(level.structure)-1) * sprite_size, (len(level.structure)-1) * sprite_size)
+			count_survival += 1
+		elif (mg.x, mg.y) == (tube.x, tube.y):
+			(tube.x, tube.y) = ((len(level.structure)-1) * sprite_size, (len(level.structure)-1) * sprite_size)
+			count_survival += 1
+		
+		level.display_level(window)
+		window.blit(mg.face, (mg.x, mg.y)) 
+		window.blit(needle.survival, (needle.x, needle.y))
+		window.blit(ether.survival, (ether.x, ether.y))
+		window.blit(tube.survival, (tube.x, tube.y))
+		# Blit the watchman after the survival tools to cover them
+		# when their position changed to be on arrival case
+		window.blit(watchman.face, (watchman.x, watchman.y)) 
 
-	# Window's game closes when MacGyver meets the watchman
-	if level.structure[mg.case_y][mg.case_x] == 'a':
+		pygame.display.flip()
+
+		# Two possible options when MacGyver arrived at the arrival case:
+		# loop game closes and loop over will display a picture depending on the situation
+		if level.structure[mg.case_y][mg.case_x] == 'a':
+				continue_game = 0
+
+	# GAME-OVER LOOP
+	# Window's game closes when MacGyver meets the watchman, a new picture appears
+	while continue_over:
+		pygame.time.Clock().tick(30)
+
+		for event in pygame.event.get():
+			if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+				continue_main = 0
+				continue_game = 0
+				continue_over = 0
+
 		if count_survival == 4:
-			print("Congratulations, you win! MacGyver sedated the watchman and escaped ")
+			message = "Congratulations, you win! MacGyver sedated the watchman and escaped. "
+			win = pygame.image.load(image_win)
+			window.blit(win, (0,0))
+			pygame.display.flip()
 		else:
-			print("Sorry, you loose... and nothing good happened to MacGyver.")
-		continue_main = 0
+			message = "Sorry, you loose... and nothing good happened to MacGyver."
+			loose = pygame.image.load(image_loose)
+			window.blit(loose, (0,0))
+			pygame.display.flip()
+
+		print(message)
+
+	
+	
