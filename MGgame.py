@@ -82,7 +82,16 @@ while continue_main:
 		if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
 			continue_main = 0
 
-
+		elif event.type == KEYDOWN:
+				# Move MacGyver with the arrow keys
+				if event.key == K_RIGHT:
+					mg.move('right')
+				elif event.key == K_LEFT:
+					mg.move('left')
+				elif event.key == K_UP:
+					mg.move('up')
+				elif event.key == K_DOWN:
+					mg.move('down')	
 	
 	level.display_level(window)
 	window.blit(mg.face, (mg.x, mg.y)) 

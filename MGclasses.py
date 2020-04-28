@@ -96,6 +96,41 @@ class Person:
 		# Level of the labyrinthe
 		self.level = level
 
+	def move(self, direction):
+		""" Method to allow the movement of the character """
+
+		# Movement on the right
+		if direction == 'right':
+			# Can't move the character outside the screen
+			if self.case_x < (nbr_sprite_side - 1):
+				# Destination case shouldn't be a wall
+				if self.level.structure[self.case_y][self.case_x + 1] != 'm':
+					# Movement +1 case
+					self.case_x += 1
+					# Determination of the real position in pixel
+					self.x = self.case_x * sprite_size
+
+		# Movement on the left
+		if direction == 'left':
+			if self.case_x > 0:
+				if self.level.structure[self.case_y][self.case_x - 1] != 'm':
+					self.case_x -= 1
+					self.x = self.case_x * sprite_size
+
+		# Movement upward
+		if direction == 'up':
+			if self.case_y > 0:
+				if self.level.structure[self.case_y - 1][self.case_x] != 'm':
+					self.case_y -= 1
+					self.y = self.case_y * sprite_size
+
+		# Movement downward
+		if direction == 'down':
+			if self.case_y < (nbr_sprite_side - 1):
+				if self.level.structure[self.case_y + 1][self.case_x] != 'm':
+					self.case_y += 1
+					self.y = self.case_y * sprite_size
+
 
 class Tool:
 	""" Class to create the survival items """
