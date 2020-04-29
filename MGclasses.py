@@ -41,12 +41,12 @@ class Level:
 		the structure level given by the method generate() """
 
 		# Load the images of the level
-		wall = pygame.image.load(image_wall)
-		wallb = pygame.image.load(image_wallb)
-		floor = pygame.image.load(image_floor)
-		floorb = pygame.image.load(image_floorb)
-		departure = pygame.image.load(image_departure)
-		arrival = pygame.image.load(image_arrival)
+		wall = pygame.image.load(IMAGE_WALL)
+		wallb = pygame.image.load(IMAGE_WALLB)
+		floor = pygame.image.load(IMAGE_FLOOR)
+		floorb = pygame.image.load(IMAGE_FLOORB)
+		departure = pygame.image.load(IMAGE_DEPARTURE)
+		arrival = pygame.image.load(IMAGE_ARRIVAL)
 
 		# Browse the structure of the level
 		num_line = 0
@@ -56,8 +56,8 @@ class Level:
 			num_case = 0
 			for sprite in line:
 				# Real position in pixel
-				x = num_case * sprite_size
-				y = num_line * sprite_size
+				x = num_case * SPRITE_SIZE
+				y = num_line * SPRITE_SIZE
 				if sprite == 'm':
 					if count_wall % 2 == 0:
 						window.blit(wallb, (x, y))
@@ -102,34 +102,34 @@ class Person:
 		# Movement on the right
 		if direction == 'right':
 			# Can't move the character outside the screen
-			if self.case_x < (nbr_sprite_side - 1):
+			if self.case_x < (NBR_SPRITE_SIDE - 1):
 				# Destination case shouldn't be a wall
 				if self.level.structure[self.case_y][self.case_x + 1] != 'm':
 					# Movement +1 case
 					self.case_x += 1
 					# Determination of the real position in pixel
-					self.x = self.case_x * sprite_size
+					self.x = self.case_x * SPRITE_SIZE
 
 		# Movement on the left
 		if direction == 'left':
 			if self.case_x > 0:
 				if self.level.structure[self.case_y][self.case_x - 1] != 'm':
 					self.case_x -= 1
-					self.x = self.case_x * sprite_size
+					self.x = self.case_x * SPRITE_SIZE
 
 		# Movement upward
 		if direction == 'up':
 			if self.case_y > 0:
 				if self.level.structure[self.case_y - 1][self.case_x] != 'm':
 					self.case_y -= 1
-					self.y = self.case_y * sprite_size
+					self.y = self.case_y * SPRITE_SIZE
 
 		# Movement downward
 		if direction == 'down':
-			if self.case_y < (nbr_sprite_side - 1):
+			if self.case_y < (NBR_SPRITE_SIDE - 1):
 				if self.level.structure[self.case_y + 1][self.case_x] != 'm':
 					self.case_y += 1
-					self.y = self.case_y * sprite_size
+					self.y = self.case_y * SPRITE_SIZE
 
 
 class Tool:
@@ -167,8 +167,8 @@ class Tool:
 		for line in self.level.structure:
 			num_case = 0
 			for sprite in line:
-				x = num_case * sprite_size
-				y = num_line * sprite_size
+				x = num_case * SPRITE_SIZE
+				y = num_line * SPRITE_SIZE
 
 				if sprite == '0':
 					if count == hasard_case:

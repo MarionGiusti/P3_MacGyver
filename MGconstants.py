@@ -1,33 +1,32 @@
 """ Constants of the labyrinthe game : MacGyver's escape """
 
 # Parameters of the window to display
-nbr_sprite_side = 15
-sprite_size = 30
-window_side = nbr_sprite_side * sprite_size
+NBR_SPRITE_SIDE = 15
+SPRITE_SIZE = 30
+WINDOW_SIDE = NBR_SPRITE_SIDE * SPRITE_SIZE
 
 # Custamize the pygame window
-window_title = " MacGyver's escape "
-image_icon = "images/MacGyver.png"
+WINDOW_TITLE = " MacGyver's escape "
+IMAGE_ICON = "images/MacGyver.png"
 
 # Figures
-image_perso = "images/MacGyver.png"
-image_arrival = "images/watchman.png"
+IMAGE_PERSO = "images/MacGyver.png"
+IMAGE_ARRIVAL = "images/watchman.png"
 
 # Elements of the labyrinthe
-image_floor = "images/floor.png"
-image_floorb = "images/floorb.png"
-image_wall = "images/wall.png"
-image_wallb = "images/wallb.png"
-image_departure = "images/departure.png"
+IMAGE_FLOOR = "images/floor.png"
+IMAGE_FLOORB = "images/floorb.png"
+IMAGE_WALL = "images/wall.png"
+IMAGE_WALLB = "images/wallb.png"
+IMAGE_DEPARTURE = "images/departure.png"
 
 # Survival items
-image_ether = "images/ether.png"
-image_needle = "images/needle.png"
-image_tube = "images/tube.png"
+IMAGE_ETHER = "images/ether.png"
+IMAGE_NEEDLE = "images/needle.png"
+IMAGE_TUBE = "images/tube.png"
 
 # Two possible images for the end of the game
-image_win = "images/win.png"
-image_loose = "images/loose.png"
+IMAGE_LOOSE = "images/loose.png"
 
 
 
