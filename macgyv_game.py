@@ -5,18 +5,21 @@
 Labyrinthe game: MacGyver must escape !
 MacGyver can move with the arrow keys on the computer keyboard.
 To win : find the arrival and sedate the watchman !
-    - He has to collect the 3 survival items (plastic tube, needle and ether) to make a syringe.
+    - He has to collect the 3 survival items (plastic tube, needle and
+     ether) to make a syringe.
     - Only at this condition, he will escape.
-    - Otherwise, the watchman will still be awake...may his soul rest in peace.
+    - Otherwise, the watchman will still be awake...
+    may his soul rest in peace.
 """
 
 import pygame
 from pygame.locals import *
 
-# import macgyv_constants as mg_co
 # import macgyv_classes as mg_cl
-from macgyv_constants import *
-from macgyv_classes import *
+from macgyv_constants import WINDOW_SIDE, IMAGE_ICON, WINDOW_TITLE, \
+IMAGE_PERSO, IMAGE_ARRIVAL, NBR_SPRITE_SIDE, SPRITE_SIZE, \
+IMAGE_ETHER, IMAGE_NEEDLE, IMAGE_TUBE, IMAGE_WIN, IMAGE_LOOSE
+from macgyv_classes import Level, Person, Tool
 
 pygame.init()
 
@@ -87,8 +90,8 @@ while CONTINUE_MAIN:
         pygame.time.Clock().tick(30)
 
         for event in pygame.event.get():
-            # If the user wants to quit: escape button or close window icon
-            # variable CONTINUE_MAIN = 0
+            # If the user wants to quit:
+            # escape button or close window icon
             if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                 CONTINUE_MAIN = 0
                 CONTINUE_GAME = 0
@@ -107,7 +110,7 @@ while CONTINUE_MAIN:
 
         # If the character MacGyver moves on the same case than a tool:
         # - The tool position changes to be on the arrival case
-        # - Variable COUNT_SURVIVAL to count the number of items collected
+        # - Variable COUNT_SURVIVAL to count the nb of items collected
         if (mg.pix_x, mg.pix_y) == (needle.pix_x, needle.pix_y):
             (needle.pix_x, needle.pix_y) = ((len(level.structure) - 1) * SPRITE_SIZE, \
                 (len(level.structure) - 1) * SPRITE_SIZE)
@@ -132,13 +135,12 @@ while CONTINUE_MAIN:
 
         pygame.display.flip()
 
-        # Two possible options when MacGyver arrived at the arrival case:
-        # loop game closes and loop over will display a picture depending on the situation
+        # Close loop game and loop over will display a picture
         if level.structure[mg.case_y][mg.case_x] == 'a':
             CONTINUE_GAME = 0
 
     # GAME-OVER LOOP
-    # Window's game closes when MacGyver meets the watchman, a new picture appears
+    # Two possible options when MacGyver is at the arrival case:
     MES = 0
     while CONTINUE_OVER:
         pygame.time.Clock().tick(30)
@@ -156,7 +158,7 @@ while CONTINUE_MAIN:
             window.blit(win, (0, 0))
             pygame.display.flip()
         else:
-            MESSAGE = "Sorry, you loose... and nothing good happened to MacGyver."
+            MESSAGE = "Sorry, you loose... nothing good happened to MacGyver."
             MES += 1
             loose = pygame.image.load(IMAGE_LOOSE)
             window.blit(loose, (0, 0))

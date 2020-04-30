@@ -3,10 +3,9 @@
 from random import randrange
 
 import pygame
-from pygame.locals import *
 
-from macgyv_constants import *
-
+from macgyv_constants import IMAGE_WALL, IMAGE_WALLB, IMAGE_FLOOR, \
+IMAGE_FLOORB, IMAGE_DEPARTURE, IMAGE_ARRIVAL, SPRITE_SIZE, NBR_SPRITE_SIDE
 
 class Level:
     """ Class to create a level """

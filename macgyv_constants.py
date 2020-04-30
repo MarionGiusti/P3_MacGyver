@@ -27,3 +27,4 @@ IMAGE_TUBE = "images/tube.png"
 
 # Two possible images for the end of the game
 IMAGE_LOOSE = "images/loose.png"
+IMAGE_WIN = "images/win.png"
