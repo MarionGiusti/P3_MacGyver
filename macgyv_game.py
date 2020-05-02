@@ -10,6 +10,12 @@ To win : find the arrival and sedate the watchman !
     - Only at this condition, he will escape.
     - Otherwise, the watchman will still be awake...
     may his soul rest in peace.
+
+Script Python
+Files:
+macgyv_game.py (main script), 
+macgyv_classes.py and macgyv_constants.py (modules),
+n1 (labyrinth structure), images.
 """
 
 import pygame
@@ -152,13 +158,15 @@ while CONTINUE_MAIN:
                 CONTINUE_OVER = 0
 
         if COUNT_SURVIVAL == 4:
-            MESSAGE = "Congratulations, you win! MacGyver sedated the watchman and escaped."
+            MESSAGE = \
+            "Congratalutions, you win! MacGyver sedated the watchman and escaped."
             MES += 1
             win = pygame.image.load(IMAGE_WIN)
             window.blit(win, (0, 0))
             pygame.display.flip()
         else:
-            MESSAGE = "Sorry, you loose... nothing good happened to MacGyver."
+            MESSAGE = \
+            "Sorry, you loose... nothing good happened to MacGyver."
             MES += 1
             loose = pygame.image.load(IMAGE_LOOSE)
             window.blit(loose, (0, 0))

@@ -1,4 +1,4 @@
-""" Classes of the labyrinthe game: MacGyver's escape """
+""" Classes of the labyrinth game: MacGyver's escape """
 
 from random import randrange
 
@@ -56,7 +56,7 @@ class Level:
                 # Real position in pixel
                 pix_x = num_case * SPRITE_SIZE
                 pix_y = num_line * SPRITE_SIZE
-                if sprite == 'm':
+                if sprite == 'w':
                     if count_wall % 2 == 0:
                         window.blit(wallb, (pix_x, pix_y))
                     else:
@@ -91,7 +91,7 @@ class Person:
         self.case_y = 0
         self.pix_x = 0
         self.pix_y = 0
-        # Level of the labyrinthe
+        # Level of the labyrinth
         self.level = level
 
     def move(self, direction):
@@ -102,7 +102,7 @@ class Person:
             # Can't move the character outside the screen
             if self.case_x < (NBR_SPRITE_SIDE - 1):
                 # Destination case shouldn't be a wall
-                if self.level.structure[self.case_y][self.case_x + 1] != 'm':
+                if self.level.structure[self.case_y][self.case_x + 1] != 'w':
                     # Movement +1 case
                     self.case_x += 1
                     # Determination of the real position in pixel
@@ -111,21 +111,21 @@ class Person:
         # Movement on the left
         if direction == 'left':
             if self.case_x > 0:
-                if self.level.structure[self.case_y][self.case_x - 1] != 'm':
+                if self.level.structure[self.case_y][self.case_x - 1] != 'w':
                     self.case_x -= 1
                     self.pix_x = self.case_x * SPRITE_SIZE
 
         # Movement upward
         if direction == 'up':
             if self.case_y > 0:
-                if self.level.structure[self.case_y - 1][self.case_x] != 'm':
+                if self.level.structure[self.case_y - 1][self.case_x] != 'w':
                     self.case_y -= 1
                     self.pix_y = self.case_y * SPRITE_SIZE
 
         # Movement downward
         if direction == 'down':
             if self.case_y < (NBR_SPRITE_SIDE - 1):
-                if self.level.structure[self.case_y + 1][self.case_x] != 'm':
+                if self.level.structure[self.case_y + 1][self.case_x] != 'w':
                     self.case_y += 1
                     self.pix_y = self.case_y * SPRITE_SIZE
 
@@ -143,7 +143,7 @@ class Tool:
         self.case_y = 0
         self.pix_x = 0
         self.pix_y = 0
-        # Level of the labyrinthe
+        # Level of the labyrinth
         self.level = level
 
 
@@ -151,14 +151,14 @@ class Tool:
         """ Method to assign a random position for each tool:
         - Careful, only on the floor cases and not on the wall cases
         - Must add in main file, a condition to avoid that
-        the tools postion are on start and arrival cases """
+        the tools position are on start and arrival cases """
 
         # For each tool generated:
         # - Give a random number, between 0 and the number of case floor-1
         hasard_case = randrange(self.level.count_floor)
         # print(self.level.count_floor, hasard_case)
 
-        # Search and give the real position in the labyrinthe structure of
+        # Search and give the real position in the labyrinth structure of
         # the given random case floor.
         num_line = 0
         count = 0

@@ -1,4 +1,4 @@
-""" Constants of the labyrinthe game : MacGyver's escape """
+""" Constants of the labyrinth game : MacGyver's escape """
 
 # Parameters of the window to display
 NBR_SPRITE_SIDE = 15
@@ -13,7 +13,7 @@ IMAGE_ICON = "images/MacGyver.png"
 IMAGE_PERSO = "images/MacGyver.png"
 IMAGE_ARRIVAL = "images/watchman.png"
 
-# Elements of the labyrinthe
+# Elements of the labyrinth
 IMAGE_FLOOR = "images/floor.png"
 IMAGE_FLOORB = "images/floorb.png"
 IMAGE_WALL = "images/wall.png"
