@@ -13,7 +13,7 @@ To win : find the arrival and sedate the watchman !
 
 Script Python
 Files:
-macgyv_game.py (main script), 
+macgyv_game.py (main script),
 macgyv_classes.py and macgyv_constants.py (modules),
 n1 (labyrinth structure), images.
 """
