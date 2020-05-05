@@ -43,6 +43,8 @@ level.display_level(window)
 
 # Creation of MacGyver
 mg = Person(IMAGE_PERSO, level)
+# Creation of the watchman to cover
+# arrival case when survival items will be collected
 watchman = Person(IMAGE_ARRIVAL, level)
 (watchman.pix_x, watchman.pix_y) = ((NBR_SPRITE_SIDE - 1) * SPRITE_SIZE, \
 	(NBR_SPRITE_SIDE - 1) * SPRITE_SIZE)
@@ -53,34 +55,14 @@ needle = Tool(IMAGE_NEEDLE, level)
 tube = Tool(IMAGE_TUBE, level)
 
 # Condition to avoid the survival items to be localised on
-# start and arrival case
-while (needle.pix_x, needle.pix_y) == (0, 0) or \
-    (needle.pix_x, needle.pix_y) == ((NBR_SPRITE_SIDE - 1) * SPRITE_SIZE, \
-        (NBR_SPRITE_SIDE - 1) * SPRITE_SIZE) or \
-    (ether.pix_x, ether.pix_y) == (0, 0) or \
-    (ether.pix_x, ether.pix_y) == ((NBR_SPRITE_SIDE - 1) * SPRITE_SIZE, \
-        (NBR_SPRITE_SIDE - 1) * SPRITE_SIZE) or \
-    (tube.pix_x, tube.pix_y) == (0, 0) or \
-    (tube.pix_x, tube.pix_y) == ((NBR_SPRITE_SIDE - 1) * SPRITE_SIZE, \
-        (NBR_SPRITE_SIDE - 1) * SPRITE_SIZE) or \
-    (needle.pix_x, needle.pix_y) == (ether.pix_x, ether.pix_y) or \
+# the same case
+while (needle.pix_x, needle.pix_y) == (ether.pix_x, ether.pix_y) or \
     (needle.pix_x, needle.pix_y) == (tube.pix_x, tube.pix_y) or \
     (ether.pix_x, ether.pix_y) == (tube.pix_x, tube.pix_y):
 
     needle.random_pos()
     ether.random_pos()
     tube.random_pos()
-
-# print((needle.pix_x, needle.pix_y))
-# print((ether.pix_x, ether.pix_y))
-# print((tube.pix_x, tube.pix_y))
-
-window.blit(needle.survival, (needle.pix_x, needle.pix_y))
-window.blit(ether.survival, (ether.pix_x, ether.pix_y))
-window.blit(tube.survival, (tube.pix_x, tube.pix_y))
-
-# Refreshing
-pygame.display.flip()
 
 # MAIN LOOP
 CONTINUE_MAIN = 1
