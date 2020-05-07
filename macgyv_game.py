@@ -23,31 +23,29 @@ from pygame.locals import *
 
 # import macgyv_classes as mg_cl
 from macgyv_constants import WINDOW_SIDE, IMAGE_ICON, WINDOW_TITLE, \
-IMAGE_PERSO, IMAGE_ARRIVAL, NBR_SPRITE_SIDE, SPRITE_SIZE, \
-IMAGE_ETHER, IMAGE_NEEDLE, IMAGE_TUBE, IMAGE_WIN, IMAGE_LOOSE
+IMAGE_PERSO, IMAGE_ETHER, IMAGE_NEEDLE, IMAGE_TUBE, \
+IMAGE_WIN, IMAGE_LOOSE
 from macgyv_classes import Level, Person, Tool
 
 pygame.init()
 
 # Open the window pygame (square)
-window = pygame.display.set_mode((WINDOW_SIDE, WINDOW_SIDE))
+window = pygame.display.set_mode((WINDOW_SIDE, WINDOW_SIDE + 50))
 # Add icon
 icon = pygame.image.load(IMAGE_ICON)
 pygame.display.set_icon(icon)
 # Title
 pygame.display.set_caption(WINDOW_TITLE)
+# Text font choosen
+myfont = pygame.font.SysFont('Arial', 20)
 
+# Creation of the labyrinth
 level = Level('n1')
 level.generate()
 level.display_level(window)
 
 # Creation of MacGyver
 mg = Person(IMAGE_PERSO, level)
-# Creation of the watchman to cover
-# arrival case when survival items will be collected
-watchman = Person(IMAGE_ARRIVAL, level)
-(watchman.pix_x, watchman.pix_y) = ((NBR_SPRITE_SIDE - 1) * SPRITE_SIZE, \
-	(NBR_SPRITE_SIDE - 1) * SPRITE_SIZE)
 
 # Creation of the survival items
 ether = Tool(IMAGE_ETHER, level)
@@ -97,29 +95,29 @@ while CONTINUE_MAIN:
                     mg.move('down')
 
         # If the character MacGyver moves on the same case than a tool:
-        # - The tool position changes to be on the arrival case
+        # - The tool position changes to be out of the labyrinth
         # - Variable COUNT_SURVIVAL to count the nb of items collected
         if (mg.pix_x, mg.pix_y) == (needle.pix_x, needle.pix_y):
-            (needle.pix_x, needle.pix_y) = ((len(level.structure) - 1) * SPRITE_SIZE, \
-                (len(level.structure) - 1) * SPRITE_SIZE)
+            (needle.pix_x, needle.pix_y) = (WINDOW_SIDE - 50, WINDOW_SIDE + 10)
             COUNT_SURVIVAL += 1
         elif (mg.pix_x, mg.pix_y) == (ether.pix_x, ether.pix_y):
-            (ether.pix_x, ether.pix_y) = ((len(level.structure) - 1) * SPRITE_SIZE, \
-                (len(level.structure) - 1) * SPRITE_SIZE)
+            (ether.pix_x, ether.pix_y) = (WINDOW_SIDE - 100, WINDOW_SIDE + 10)
             COUNT_SURVIVAL += 1
         elif (mg.pix_x, mg.pix_y) == (tube.pix_x, tube.pix_y):
-            (tube.pix_x, tube.pix_y) = ((len(level.structure) - 1) * SPRITE_SIZE, \
-            (len(level.structure) - 1) * SPRITE_SIZE)
+            (tube.pix_x, tube.pix_y) = (WINDOW_SIDE - 150, WINDOW_SIDE + 10)
             COUNT_SURVIVAL += 1
 
+        # Indicate on window the number of survival tool collected
+        textsurface = myfont.render('COUNT SURVIVAL TOOL = {}'.format(COUNT_SURVIVAL), \
+        False, (255, 255, 255), (0, 0, 0))
+
+        # Refreshing window
         level.display_level(window)
         window.blit(mg.face, (mg.pix_x, mg.pix_y))
         window.blit(needle.survival, (needle.pix_x, needle.pix_y))
         window.blit(ether.survival, (ether.pix_x, ether.pix_y))
         window.blit(tube.survival, (tube.pix_x, tube.pix_y))
-        # Blit the watchman after the survival tools to cover them
-        # when their position changed to be on arrival case
-        window.blit(watchman.face, (watchman.pix_x, watchman.pix_y))
+        window.blit(textsurface, (WINDOW_SIDE - 420, WINDOW_SIDE + 10))
 
         pygame.display.flip()
 
@@ -139,7 +137,7 @@ while CONTINUE_MAIN:
                 CONTINUE_GAME = 0
                 CONTINUE_OVER = 0
 
-        if COUNT_SURVIVAL == 4:
+        if COUNT_SURVIVAL == 3:
             MESSAGE = \
             "Congratalutions, you win! MacGyver sedated the watchman and escaped."
             MES += 1
