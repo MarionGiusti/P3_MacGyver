@@ -3,9 +3,157 @@
 from random import randrange
 
 import pygame
+from pygame.locals import *
 
-from macgyv_constants import IMAGE_WALL, IMAGE_WALLB, IMAGE_FLOOR, \
-IMAGE_FLOORB, IMAGE_DEPARTURE, IMAGE_ARRIVAL, SPRITE_SIZE, NBR_SPRITE_SIDE
+from macgyv_constants import WINDOW_SIDE, IMAGE_ICON, WINDOW_TITLE, \
+IMAGE_WALL, IMAGE_WALLB, IMAGE_FLOOR, IMAGE_FLOORB, \
+IMAGE_DEPARTURE, IMAGE_ARRIVAL, SPRITE_SIZE, NBR_SPRITE_SIDE, \
+IMAGE_PERSO, IMAGE_ETHER, IMAGE_NEEDLE, IMAGE_TUBE, \
+IMAGE_WIN, IMAGE_LOOSE
+
+class GameManager:
+    """ Class to manage the game """
+
+    def __init__(self):
+        """ Initialisation """
+        pygame.init()
+        # Open the window pygame (square)
+        self.window = pygame.display.set_mode((WINDOW_SIDE, WINDOW_SIDE + 50))
+        # Add icon
+        icon = pygame.image.load(IMAGE_ICON)
+        pygame.display.set_icon(icon)
+        # Title
+        pygame.display.set_caption(WINDOW_TITLE)
+
+        # Creation of the labyrinth
+        self.level = Level('n1')
+        self.level.generate()
+        self.level.display_level(self.window)
+
+        # Creation of MacGyver
+        self.macgy = Person(IMAGE_PERSO, self.level)
+
+        # Creation of the survival items
+        self.ether = Tool(IMAGE_ETHER, self.level)
+        self.needle = Tool(IMAGE_NEEDLE, self.level)
+        self.tube = Tool(IMAGE_TUBE, self.level)
+
+        self.continue_main = 1
+        self.continue_game = 1
+        self.continue_over = 1
+        self.count_survival = 0
+
+    def choose_random(self):
+        """Condition to avoid the survival items
+        to be localised on the same case """
+        while (self.needle.pix_x, self.needle.pix_y) == (self.ether.pix_x, self.ether.pix_y) or \
+            (self.needle.pix_x, self.needle.pix_y) == (self.tube.pix_x, self.tube.pix_y) or \
+            (self.ether.pix_x, self.ether.pix_y) == (self.tube.pix_x, self.tube.pix_y):
+
+            self.needle.random_pos()
+            self.ether.random_pos()
+            self.tube.random_pos()
+
+    def collect(self):
+        """ If the character MacGyver moves on the same case than a tool:
+        - The tool position changes to be out of the labyrinth
+        - Variable count_survival to count the nb of items collected """
+        if (self.macgy.pix_x, self.macgy.pix_y) == (self.needle.pix_x, self.needle.pix_y):
+            (self.needle.pix_x, self.needle.pix_y) = (WINDOW_SIDE - 50, WINDOW_SIDE + 10)
+            self.count_survival += 1
+        elif (self.macgy.pix_x, self.macgy.pix_y) == (self.ether.pix_x, self.ether.pix_y):
+            (self.ether.pix_x, self.ether.pix_y) = (WINDOW_SIDE - 100, WINDOW_SIDE + 10)
+            self.count_survival += 1
+        elif (self.macgy.pix_x, self.macgy.pix_y) == (self.tube.pix_x, self.tube.pix_y):
+            (self.tube.pix_x, self.tube.pix_y) = (WINDOW_SIDE - 150, WINDOW_SIDE + 10)
+            self.count_survival += 1
+
+    def game_loop_play(self, window):
+        """ GAME-PLAY LOOP
+        All the instructions concerning the game before the final condition """
+        while self.continue_game:
+            pygame.time.Clock().tick(30)
+
+            for event in pygame.event.get():
+                # If the user wants to quit:
+                # escape button or close window icon
+                if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                    self.continue_main = 0
+                    self.continue_game = 0
+                    self.continue_over = 0
+
+                elif event.type == KEYDOWN:
+                    # Move MacGyver with the arrow keys
+                    if event.key == K_RIGHT:
+                        self.macgy.move('right')
+                    elif event.key == K_LEFT:
+                        self.macgy.move('left')
+                    elif event.key == K_UP:
+                        self.macgy.move('up')
+                    elif event.key == K_DOWN:
+                        self.macgy.move('down')
+
+                self.collect()
+
+                # Indicate on window the number of survival tool collected
+                # Text font choosen
+                myfont = pygame.font.SysFont('Arial', 20)
+                textsurface = myfont.render('COUNT SURVIVAL TOOL = {}'\
+                    .format(self.count_survival), False, (255, 255, 255), (0, 0, 0))
+
+                # Refreshing window
+                self.level.display_level(window)
+                window.blit(self.macgy.face, (self.macgy.pix_x, self.macgy.pix_y))
+                window.blit(self.needle.survival, (self.needle.pix_x, self.needle.pix_y))
+                window.blit(self.ether.survival, (self.ether.pix_x, self.ether.pix_y))
+                window.blit(self.tube.survival, (self.tube.pix_x, self.tube.pix_y))
+                window.blit(textsurface, (WINDOW_SIDE - 420, WINDOW_SIDE + 10))
+
+                pygame.display.flip()
+
+                # Close loop game and loop over will display a picture
+                if self.level.structure[self.macgy.case_y][self.macgy.case_x] == 'a':
+                    self.continue_game = 0
+
+    def game_loop_over(self, window):
+        """GAME-OVER LOOP
+        Two possible options when MacGyver is at the arrival case: """
+        mes = 0
+        while self.continue_over:
+            pygame.time.Clock().tick(30)
+
+            for event in pygame.event.get():
+                if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                    self.continue_main = 0
+                    self.continue_game = 0
+                    self.continue_over = 0
+
+            if self.count_survival == 3:
+                message = \
+                "Congratalutions, you win! MacGyver sedated the watchman and escaped."
+                mes += 1
+                win = pygame.image.load(IMAGE_WIN)
+                window.blit(win, (0, 0))
+                pygame.display.flip()
+            else:
+                message = \
+                "Sorry, you loose... nothing good happened to MacGyver."
+                mes += 1
+                loose = pygame.image.load(IMAGE_LOOSE)
+                window.blit(loose, (0, 0))
+                pygame.display.flip()
+
+            if mes == 1:
+                print(message)
+
+    def game_loop(self, window):
+        """ Main loop of the game with
+        the different possible actions and the final condition """
+        pygame.key.set_repeat(400, 30)
+        while self.continue_main:
+            self.game_loop_play(window)
+            self.game_loop_over(window)
+
 
 class Level:
     """ Class to create a level """
